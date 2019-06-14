@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "slowka")
@@ -15,11 +16,11 @@ public class Slowko{
     private Long id;
 
     @NotNull
-    @Lob
+    @Size(max = 100)
     private String slowko;
 
     @NotNull
-    @Lob
+    @Size(max = 100)
     private String tlumaczenie;
 
 

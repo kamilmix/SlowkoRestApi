@@ -11,5 +11,6 @@ import java.util.Optional;
 @Repository
 public interface SlowkoRepository extends JpaRepository<Slowko, Long> {
     Page<Slowko> findByZestawId(Long postId, Pageable pageable);
+    Iterable<Slowko> findAllByZestawId(Long zestawId);
     Optional<Slowko> findByIdAndZestawId(Long id, Long postId);
 }

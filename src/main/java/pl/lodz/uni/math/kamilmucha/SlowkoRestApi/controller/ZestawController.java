@@ -18,7 +18,7 @@ public class ZestawController {
     @Autowired
     ZestawRepository zestawRepository;
 
-    @GetMapping("/zestawy")
+    @GetMapping("/all")
     public Page<Zestaw> getAllZestaws(Pageable pageable){
         return zestawRepository.findAll(pageable);
     }
@@ -28,14 +28,8 @@ public class ZestawController {
         return zestawRepository.save(zestaw);
     }
 
-    @PostMapping("/posts")
-    public Zestaw createZestaw(@Valid @RequestBody Zestaw post) {
-        return zestawRepository.save(post);
-    }
-
-    @GetMapping("/all")
+    @GetMapping("/zestawy")
     public List<Zestaw> getAll() {
         return zestawRepository.findAll();
     }
-
 }

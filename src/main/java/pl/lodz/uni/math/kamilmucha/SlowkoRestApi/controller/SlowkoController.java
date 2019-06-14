@@ -19,10 +19,15 @@ public class SlowkoController {
     @Autowired
     ZestawRepository zestawRepository;
 
-    @GetMapping("/zestawy/{zestawId}")
-    public Page<Slowko> getAllSlowkaByZestawId(@PathVariable(value = "zestawId") Long postId,
+    @GetMapping("/all/{zestawId}")
+    public Page<Slowko> getAllSlowkaByZestawId(@PathVariable(value = "zestawId") Long zestawId,
                                                Pageable pageable) {
-        return slowkoRepository.findByZestawId(postId, pageable);
+        return slowkoRepository.findByZestawId(zestawId, pageable);
+    }
+
+    @GetMapping("/zestawy/{zestawId}")
+    public  Iterable<Slowko> findAllByZestawId(@PathVariable(value = "zestawId") Long zestawId){
+        return slowkoRepository.findAllByZestawId(zestawId);
     }
 
     @PostMapping("/zestawy/{zestawId}")
@@ -33,5 +38,4 @@ public class SlowkoController {
             return slowkoRepository.save(slowko);
         }).orElseThrow(() -> new ResourceNotFoundException("ZestawId " + zestawId + " not found"));
     }
-
 }
