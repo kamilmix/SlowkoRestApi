@@ -10,6 +10,8 @@ import pl.lodz.uni.math.kamilmucha.SlowkoRestApi.repository.SlowkoRepository;
 import pl.lodz.uni.math.kamilmucha.SlowkoRestApi.repository.ZestawRepository;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class SlowkoController {
@@ -30,12 +32,26 @@ public class SlowkoController {
         return slowkoRepository.findAllByZestawId(zestawId);
     }
 
-    @PostMapping("/zestawy/{zestawId}")
+   // @PostMapping("/zestawy/{zestawId}")
     public Slowko createSlowko(@PathVariable (value = "zestawId") Long zestawId,
                                  @Valid @RequestBody Slowko slowko) {
         return zestawRepository.findById(zestawId).map(zestaw -> {
             slowko.setZestaw(zestaw);
             return slowkoRepository.save(slowko);
+        }).orElseThrow(() -> new ResourceNotFoundException("ZestawId " + zestawId + " not found"));
+    }
+
+    @PostMapping("/zestawy/{zestawId}")
+    public List<Slowko> createSlowkas(@PathVariable (value = "zestawId") Long zestawId,
+                                      @Valid @RequestBody List<Slowko> slowkas) {
+        List<Slowko> response = new ArrayList<>();
+        return zestawRepository.findById(zestawId).map(zestaw -> {
+            for(Slowko slowko : slowkas){
+                slowko.setZestaw(zestaw);
+                slowkoRepository.save(slowko);
+                response.add(slowko);
+            }
+            return response;
         }).orElseThrow(() -> new ResourceNotFoundException("ZestawId " + zestawId + " not found"));
     }
 }
